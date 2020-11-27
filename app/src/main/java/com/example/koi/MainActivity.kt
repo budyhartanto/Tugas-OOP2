@@ -1,4 +1,4 @@
-package com.example.koiapp
+package com.example.koi
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

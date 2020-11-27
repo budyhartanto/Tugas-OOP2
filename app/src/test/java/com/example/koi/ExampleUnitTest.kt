@@ -1,4 +1,4 @@
-package com.example.koiapp
+package com.example.koi
 
 import org.junit.Test
 
