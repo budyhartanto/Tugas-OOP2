@@ -1,4 +1,4 @@
-package com.example.koi
+package com.example.crudkoi
 
 import org.junit.Test
 
