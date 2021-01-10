@@ -27,7 +27,15 @@ class EditUserActivity : AppCompatActivity() {
         btn_saveUser.setOnClickListener{
             CoroutineScope(Dispatchers.IO).launch {
                 db.userDao().addUser(
-                    User(0, txt_nama.text.toString(), txt_username.text.toString())
+                        User(0, txt_nama.text.toString(), txt_username.text.toString())
+                )
+                finish()
+            }
+        }
+        btn_updateUser.setOnClickListener{
+            CoroutineScope(Dispatchers.IO).launch {
+                db.userDao().updateUser(
+                    User(userId, txt_nama.text.toString(), txt_username.text.toString())
                 )
                 finish()
             }
@@ -39,9 +47,14 @@ class EditUserActivity : AppCompatActivity() {
         val intentType = intent.getIntExtra("intent_type", 0)
         when (intentType) {
             Constant.TYPE_CREATE -> {
-
+                btn_updateUser.visibility = View.GONE
             }
             Constant.TYPE_READ -> {
+                btn_saveUser.visibility = View.GONE
+                btn_updateUser.visibility = View.GONE
+                getUser()
+            }
+            Constant.TYPE_UPDATE -> {
                 btn_saveUser.visibility = View.GONE
                 getUser()
             }
