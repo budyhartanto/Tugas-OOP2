@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "114085401486",
+    "firebase_url": "https://crudkoi-2a2d8-default-rtdb.firebaseio.com",
+    "project_id": "crudkoi-2a2d8",
+    "storage_bucket": "crudkoi-2a2d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114085401486:android:461d2a05a4cce678f60adf",
+        "android_client_info": {
+          "package_name": "com.example.crudkoi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114085401486-v6g7op7nfhuokjd0evq59unvf1i3v115.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlq3wyGpwfCwaiPR5eSGcsfJtRKB_hytk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114085401486-v6g7op7nfhuokjd0evq59unvf1i3v115.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

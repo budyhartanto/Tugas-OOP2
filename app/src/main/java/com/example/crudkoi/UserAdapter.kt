@@ -1,49 +1,101 @@
 package com.example.crudkoi
 
+import android.app.AlertDialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.example.crudkoi.Database.User
-import kotlinx.android.synthetic.main.adapter_user.view.*
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import com.google.firebase.database.FirebaseDatabase
+
+class UserAdapter(val mCtx : Context, val layoutResId : Int, val usrList :List<User> ) :
+    ArrayAdapter<User>(mCtx, layoutResId, usrList) {
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val layoutInflater : LayoutInflater = LayoutInflater.from(mCtx)
+
+        val view : View = layoutInflater.inflate(layoutResId, null)
+
+        val tvNama : TextView = view.findViewById(R.id.tv_nama)
+        val tvAlamat : TextView = view.findViewById(R.id.tv_alamat)
+        val tvEdit : TextView = view.findViewById(R.id.tv_edit)
 
 
-class UserAdapter (private val AllUser: ArrayList<User>, private val listener: OnAdapterListener) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+        val user = usrList[position]
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        return UserViewHolder(
-            LayoutInflater.from(parent.context).inflate( R.layout.adapter_user, parent, false)
-        )
-    }
-
-    override fun getItemCount() = AllUser.size
-
-    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val user = AllUser[position]
-        holder.view.text_username.text = user.username
-        holder.view.text_username.setOnClickListener {
-            listener.onClick(user)
+        tvEdit.setOnClickListener{
+            showUpdateDialog(user)
         }
-        holder.view.icon_delete.setOnClickListener {
-            listener.onDelete(user)
+
+
+        tvNama.text = user.nama
+        tvAlamat.text = user.alamat
+
+        return view
+    }
+
+    fun showUpdateDialog(user: User) {
+        val builder = AlertDialog.Builder(mCtx)
+        builder.setTitle("Edit Data")
+
+        val inflater = LayoutInflater.from(mCtx)
+        val view = inflater.inflate(R.layout.update_dialog, null)
+
+        val etNama = view.findViewById<EditText>(R.id.et_nama)
+        val etAlamat = view.findViewById<EditText>(R.id.et_alamat)
+
+        etNama.setText(user.nama)
+        etAlamat.setText(user.alamat)
+
+        builder.setView(view)
+
+        builder.setPositiveButton("Update"){p0,p1 ->
+            val dbUsr = FirebaseDatabase.getInstance().getReference("user")
+
+            val nama = etNama.text.toString().trim()
+            val alamat = etAlamat.text.toString().trim()
+            if(nama.isEmpty()){
+                etNama.error = "Mohon nama di iisi"
+                etNama.requestFocus()
+                return@setPositiveButton
+            }
+            if(alamat.isEmpty()){
+                etAlamat.error = "Mohon alamat diisi"
+                etAlamat.requestFocus()
+                return@setPositiveButton
+            }
+
+
+            val user1 = User(user.id, nama, alamat)
+
+
+            dbUsr.child(user1.id).setValue(user1)
+
+            Toast.makeText(mCtx, "Data berhasil di update", Toast.LENGTH_SHORT).show()
+
         }
-        holder.view.icon_editUser.setOnClickListener {
-            listener.onUpdate(user)
+
+        builder.setNeutralButton("no"){p0,p1 ->
+
         }
+
+
+        builder.setNegativeButton("delete"){p0,p1 ->
+
+            val dbUsr =  FirebaseDatabase.getInstance().getReference("user").child(user.id)
+
+
+            dbUsr.removeValue()
+
+
+            Toast.makeText(mCtx, "Data berhasil dihapus", Toast.LENGTH_SHORT).show()
+
+        }
+
+        val alert = builder.create()
+        alert.show()
     }
-
-    class UserViewHolder(val view: View) : RecyclerView.ViewHolder(view)
-
-    fun setData(list: List<User>) {
-        AllUser.clear()
-        AllUser.addAll(list)
-        notifyDataSetChanged()
-    }
-
-    interface OnAdapterListener {
-        fun onClick(user: User)
-        fun onDelete(user: User)
-        fun onUpdate(user: User)
-    }
-
 }
