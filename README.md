@@ -1,3 +1,3 @@
 # Tugas-oop2
-Nama : 1. Muhammad Budy Hartanto
-       2. Ilham Hanif Pamulia
+Nama : 1. Muhammad Budy Hartanto (18090050)
+       2. Ilham Hanif Pamulia (18090027)
